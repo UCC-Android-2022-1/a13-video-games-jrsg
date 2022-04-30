@@ -23,7 +23,7 @@ public class VideoGameAdapter extends RecyclerView.Adapter<VideoGameHolder> {
     @NonNull
     @Override
     public VideoGameHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(this.context).inflate(android.R.layout.simple_list_item_1, parent);
+        View view = LayoutInflater.from(this.context).inflate(android.R.layout.simple_list_item_1, parent, false);
         return new VideoGameHolder(view);
     }
 

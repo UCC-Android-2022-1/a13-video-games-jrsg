@@ -16,11 +16,13 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/edtTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/titulo" />
 
         <EditText
+            android:id="@+id/edtPrecio"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/precio" />
@@ -73,14 +75,16 @@
             android:orientation="vertical">
 
             <RadioButton
+                android:id="@+id/rbNuevo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/nuevo"/>
+                android:text="@string/nuevo" />
 
             <RadioButton
+                android:id="@+id/rbUsado"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/usado"/>
+                android:text="@string/usado" />
         </RadioGroup>
     </LinearLayout>
 
