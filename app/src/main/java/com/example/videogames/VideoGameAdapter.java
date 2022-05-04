@@ -13,18 +13,20 @@ import java.util.ArrayList;
 public class VideoGameAdapter extends RecyclerView.Adapter<VideoGameHolder> {
     private ArrayList<VideoGame> data;
     private Context context;
+    private OnClickListener onClickListener;
 
-    public VideoGameAdapter(Context context) {
+    public VideoGameAdapter(Context context, OnClickListener onClickListener) {
         data = new ArrayList<>();
 
         this.context = context;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
     @Override
     public VideoGameHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(this.context).inflate(android.R.layout.simple_list_item_1, parent, false);
-        return new VideoGameHolder(view);
+        return new VideoGameHolder(view, onClickListener);
     }
 
     @Override
@@ -46,6 +48,10 @@ public class VideoGameAdapter extends RecyclerView.Adapter<VideoGameHolder> {
 
     public VideoGame leer(int posicion){
         return data.get(posicion);
+    }
+
+    public void limpiar() {
+        data.clear();
     }
 
     public interface OnClickListener{

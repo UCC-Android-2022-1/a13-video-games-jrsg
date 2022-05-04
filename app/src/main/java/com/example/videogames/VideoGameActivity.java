@@ -4,11 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -99,15 +102,32 @@ public class VideoGameActivity extends AppCompatActivity {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, parametros, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-
+                procesarRespuestaGuardado(response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Toast.makeText(VideoGameActivity.this, "Error de comunicación", Toast.LENGTH_SHORT).show();
+                Log.e("VideoGameActivity", error.getMessage());
             }
         });
 
         queue.add(request);
+    }
+
+    private void procesarRespuestaGuardado(JSONObject response) {
+        try {
+            boolean ok      = response.getBoolean("ok");
+            String error    = response.getString("error");
+
+            if (ok){
+                finish();
+            }else{
+                Toast.makeText(VideoGameActivity.this, "Ha sucedido un error", Toast.LENGTH_SHORT).show();
+                Log.e("VideoGameActivity", error);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

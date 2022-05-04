@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements VideoGameAdapter.
         fabNuevo = findViewById(R.id.fabNuevo);
 
         recyclerView = findViewById(R.id.lista);
-        adapter = new VideoGameAdapter(this);
+        adapter = new VideoGameAdapter(this, this);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setAdapter( adapter );
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements VideoGameAdapter.
     @Override
     public void onClick(int position) {
         VideoGame videoGame = adapter.leer(position);
+
         Intent intent = new Intent(MainActivity.this, VideoGameActivity.class);
 
         startActivity(intent);
@@ -74,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements VideoGameAdapter.
 
     public void consultarLista(){
         String url = BASE_URL + "listar.php";
-
-
 
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
@@ -95,6 +94,8 @@ public class MainActivity extends AppCompatActivity implements VideoGameAdapter.
     private void procesarLista(JSONArray response) {
         if(response != null){
             try {
+                adapter.limpiar();
+
                 for(int i = 0; i < response.length(); i++){
                     JSONObject fila = response.getJSONObject(i);
 
