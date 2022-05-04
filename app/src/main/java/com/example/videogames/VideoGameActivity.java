@@ -3,6 +3,7 @@ package com.example.videogames;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -45,6 +46,39 @@ public class VideoGameActivity extends AppCompatActivity {
 
         rbNuevo = findViewById(R.id.rbNuevo);
         rbUsado = findViewById(R.id.rbUsado);
+
+        configUi();
+    }
+
+    private void configUi() {
+        Intent intent = getIntent();
+
+        if(intent != null && intent.hasExtra(MainActivity.VG_ID) ){
+            int id = intent.getIntExtra(MainActivity.VG_ID, -1);
+            String titulo = intent.getStringExtra(MainActivity.VG_TITULO);
+            double precio = intent.getDoubleExtra(MainActivity.VG_PRECIO, -1);
+
+            boolean xbox = intent.getBooleanExtra(MainActivity.VG_XBOX, false);
+            boolean playstation = intent.getBooleanExtra(MainActivity.VG_PLAYSTATION, false);
+            boolean nintendo = intent.getBooleanExtra(MainActivity.VG_NINTENDO, false);
+            boolean pc = intent.getBooleanExtra(MainActivity.VG_PC, false);
+
+            String estado = intent.getStringExtra(MainActivity.VG_ESTADO);
+
+            edtTitulo.setText(titulo);
+            edtPrecio.setText(precio + "");
+
+            cbXbox.setChecked( xbox );
+            cbPlastation.setChecked( playstation );
+            cbNintendo.setChecked( nintendo );
+            cbPc.setChecked( pc );
+
+            if(estado.equals("Nuevo")){
+                rbNuevo.setChecked(true);
+            }else{
+                rbUsado.setChecked(true);
+            }
+        }
     }
 
     @Override

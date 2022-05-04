@@ -24,6 +24,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity implements VideoGameAdapter.OnClickListener {
+    public static final String VG_TITULO = "VG_TITULO";
+    public static final String VG_ID = "VG_ID";
+    public static final String VG_PRECIO = "VG_PRECIO";
+    public static final String VG_XBOX = "VG_XBOX";
+    public static final String VG_PLAYSTATION = "VG_PLAYSTATION";
+    public static final String VG_NINTENDO = "VG_NINTENDO";
+    public static final String VG_PC = "VG_PC";
+    public static final String VG_ESTADO = "VG_ESTADO";
+
     private RecyclerView recyclerView;
     private VideoGameAdapter adapter;
     private RequestQueue requestQueue;
@@ -63,6 +72,17 @@ public class MainActivity extends AppCompatActivity implements VideoGameAdapter.
 
         Intent intent = new Intent(MainActivity.this, VideoGameActivity.class);
 
+        intent.putExtra(VG_TITULO, videoGame.getNombre());
+        intent.putExtra(VG_ID, videoGame.getId());
+        intent.putExtra(VG_PRECIO, videoGame.getPrecio());
+
+        intent.putExtra(VG_XBOX, videoGame.isXbox());
+        intent.putExtra(VG_PLAYSTATION, videoGame.isPlay_station());
+        intent.putExtra(VG_NINTENDO, videoGame.isNintendo());
+        intent.putExtra(VG_PC, videoGame.isPc());
+
+        intent.putExtra(VG_ESTADO, videoGame.getEstado());
+
         startActivity(intent);
     }
 
@@ -101,11 +121,26 @@ public class MainActivity extends AppCompatActivity implements VideoGameAdapter.
 
                     int id          = fila.getInt("id");
                     String titulo   = fila.getString("titulo");
+                    double precio   = fila.getDouble("precio");
+
+                    boolean xbox        = fila.getBoolean("xbox");
+                    boolean playstation = fila.getBoolean("playstation");
+                    boolean nintendo    = fila.getBoolean("nintendo");
+                    boolean pc          = fila.getBoolean("pc");
+
+                    String estado       = fila.getString("estado");
 
                     VideoGame videoGame = new VideoGame();
 
                     videoGame.setId( id );
                     videoGame.setNombre(  titulo );
+                    videoGame.setPrecio(precio);
+
+                    videoGame.setXbox(xbox);
+                    videoGame.setPlay_station(playstation);
+                    videoGame.setNintendo(nintendo);
+
+                    videoGame.setEstado(estado);
 
                     adapter.agregar(videoGame);
                 }

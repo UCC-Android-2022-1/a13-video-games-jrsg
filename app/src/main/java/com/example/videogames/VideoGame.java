@@ -4,7 +4,7 @@ public class VideoGame {
     private int id;
     private String nombre, estado;
     private boolean xbox, play_station, nintendo, pc;
-    private float precio;
+    private double precio;
 
     public int getId() {
         return id;
@@ -62,11 +62,11 @@ public class VideoGame {
         this.pc = pc;
     }
 
-    public float getPrecio() {
+    public double getPrecio() {
         return precio;
     }
 
-    public void setPrecio(float precio) {
+    public void setPrecio(double precio) {
         this.precio = precio;
     }
 }
