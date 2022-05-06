@@ -30,6 +30,7 @@ public class VideoGameActivity extends AppCompatActivity {
     private EditText edtTitulo, edtPrecio;
     private CheckBox cbXbox, cbPlastation, cbNintendo, cbPc;
     private RadioButton rbNuevo, rbUsado;
+    private int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,9 @@ public class VideoGameActivity extends AppCompatActivity {
 
         if(intent != null && intent.hasExtra(MainActivity.VG_ID) ){
             int id = intent.getIntExtra(MainActivity.VG_ID, -1);
+
+            this.id = id;
+
             String titulo = intent.getStringExtra(MainActivity.VG_TITULO);
             double precio = intent.getDoubleExtra(MainActivity.VG_PRECIO, -1);
 
@@ -83,7 +87,13 @@ public class VideoGameActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.videogame_menu, menu);
+        int id_layout = R.menu.videogame_menu;
+
+        if(id != 0){
+            id_layout = R.menu.videogame_menu_mod;
+        }
+
+        getMenuInflater().inflate(id_layout, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -94,9 +104,46 @@ public class VideoGameActivity extends AppCompatActivity {
             case R.id.opc_guardar:
                 guardar();
                 break;
+            case R.id.opc_borrar:
+                borrar();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void borrar() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url = MainActivity.BASE_URL + "borrar.php";
+
+        Map<String, String> mapa = new HashMap<>();
+
+        mapa.put("id", id + "");
+        JSONObject parametros = new JSONObject(mapa);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, parametros, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+
+                    if(response.getBoolean("ok")){
+                        finish();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("VideoGameActivity", error.getMessage());
+            }
+        });
+
+        queue.add(request);
     }
 
     private void guardar() {
@@ -118,9 +165,12 @@ public class VideoGameActivity extends AppCompatActivity {
 
         String url = MainActivity.BASE_URL + "guardar.php";
 
-
-
         Map<String, String> mapa = new HashMap<>();
+
+        if(id != 0) {
+            mapa.put("id", id + "");
+        }
+
         mapa.put("titulo", titulo);
         mapa.put("precio", precio);
 
